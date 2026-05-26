@@ -18,4 +18,3 @@ class Food:
 
     def position(self):
         return self.food
-    
