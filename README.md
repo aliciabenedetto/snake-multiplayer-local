@@ -10,6 +10,8 @@ O objetivo do projeto é implementar um jogo Snake com dois jogadores no mesmo c
 
 - Python 3
 - Turtle
+- Git
+- GitHub
 
 ## Controles
 
@@ -27,6 +29,12 @@ O objetivo do projeto é implementar um jogo Snake com dois jogadores no mesmo c
 - Seta para baixo: mover para baixo
 - Seta para direita: mover para direita
 
+## Controles do sistema
+
+- P: iniciar partida
+- ESPAÇO: reiniciar após Game Over
+- Q: sair do jogo
+
 ## Mecânicas do jogo
 
 - Dois jogadores locais na mesma arena
@@ -34,15 +42,46 @@ O objetivo do projeto é implementar um jogo Snake com dois jogadores no mesmo c
 - Comida gerada aleatoriamente no mapa
 - Crescimento da cobra ao comer
 - Pontuação individual
-- Colisão com as bordas
 - Colisão com o próprio corpo
-- Colisão com o adversário
-- Reset individual do jogador que perde
+- Colisão com o corpo do adversário
+- Sistema de Game Over
+- Tela inicial interativa
+- Tela de reinício da partida
+- Efeitos sonoros
 - Aumento gradual da velocidade da partida
+- Sistema de teleporte nas bordas do mapa (wrap-around)
+
+## Condições de vitória e derrota
+
+### Vitória
+
+- Cada comida coletada vale 10 pontos.
+- O primeiro jogador que atingir 50 pontos vence a partida.
+
+### Derrota
+
+A rodada termina quando ocorre:
+
+- colisão com o próprio corpo;
+- colisão com o corpo do adversário.
+
+### Teleporte nas bordas
+
+O jogo utiliza um sistema de wrap-around. Quando a cobra ultrapassa um limite da tela, ela reaparece automaticamente no lado oposto do mapa.
 
 ## Arquitetura do projeto
 
 O projeto foi organizado de forma modular para separar responsabilidades, seguindo uma estrutura semelhante à utilizada em jogos como Asteroids Singleplayer.
+
+A arquitetura foi dividida em:
+
+- gerenciamento do jogo;
+- entidades;
+- colisões;
+- pontuação;
+- configurações;
+- entrada do jogador;
+- renderização da interface.
 
 ## Estrutura de arquivos
 
@@ -56,12 +95,13 @@ snake-multiplayer-local/
 ├── food.py
 ├── collision.py
 ├── score.py
+├── sound.py
 ├── README.md
 │
 ├── docs/
 └── assets/
 ```
-## Como executar
+## Execute o jogo:
 ```text
 python main.py
 ```
