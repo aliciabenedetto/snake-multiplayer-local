@@ -6,7 +6,7 @@ from settings import *
 from snake import Snake
 from food import Food
 from score import Scoreboard
-from collision import hit_wall, hit_own_body, hit_opponent_body, hit_opponent_head
+from collision import hit_own_body, hit_opponent_body
 
 
 class Game:
@@ -98,7 +98,7 @@ class Game:
 
         self.menu_pen.goto(0, -20)
         self.menu_pen.write(
-            "Pressione ESPACO ou P para jogar",
+            "Pressione P para jogar",
             align="center",
             font=("Courier", 16, "normal")
         )
@@ -112,7 +112,7 @@ class Game:
 
         self.screen.listen()
 
-    def show_game_over(self):
+    def show_game_over(self, message="Fim da rodada"):
         self.state = "game_over"
         self.hide_game_objects()
         self.menu_pen.clear()
@@ -126,7 +126,7 @@ class Game:
 
         self.menu_pen.goto(0, 10)
         self.menu_pen.write(
-            "Fim da rodada",
+            message,
             align="center",
             font=("Courier", 18, "normal")
         )
@@ -176,6 +176,20 @@ class Game:
 
         self.food.random_position()
 
+    def wrap_snake(self, snake):
+        x = snake.head.xcor()
+        y = snake.head.ycor()
+
+        if x > BOUNDARY:
+            snake.head.setx(-BOUNDARY)
+        elif x < -BOUNDARY:
+            snake.head.setx(BOUNDARY)
+
+        if y > BOUNDARY:
+            snake.head.sety(-BOUNDARY)
+        elif y < -BOUNDARY:
+            snake.head.sety(BOUNDARY)
+
     def check_food_collision(self):
         food_obj = self.food.position()
 
@@ -193,32 +207,53 @@ class Game:
             self.scoreboard.add_p2()
             self.increase_speed()
 
+    def check_winner(self):
+        if self.scoreboard.score_p1 >= WINNING_SCORE:
+            play_death_sound()
+            time.sleep(0.5)
+            self.show_game_over("Jogador 1 venceu!")
+            return True
+
+        if self.scoreboard.score_p2 >= WINNING_SCORE:
+            play_death_sound()
+            time.sleep(0.5)
+            self.show_game_over("Jogador 2 venceu!")
+            return True
+
+        return False
+
     def increase_speed(self):
         if self.delay > MIN_DELAY:
             self.delay -= SPEED_INCREASE
 
     def check_death(self):
         player1_dead = (
-            hit_wall(self.player1)
-            or hit_own_body(self.player1)
+            hit_own_body(self.player1)
             or hit_opponent_body(self.player1, self.player2)
-            or hit_opponent_head(self.player1, self.player2)
         )
 
         player2_dead = (
-            hit_wall(self.player2)
-            or hit_own_body(self.player2)
+            hit_own_body(self.player2)
             or hit_opponent_body(self.player2, self.player1)
-            or hit_opponent_head(self.player2, self.player1)
         )
 
         if player1_dead or player2_dead:
             play_death_sound()
             time.sleep(0.5)
-            self.show_game_over()
+
+            if self.scoreboard.score_p1 > self.scoreboard.score_p2:
+                self.show_game_over("Jogador 1 venceu!")
+            elif self.scoreboard.score_p2 > self.scoreboard.score_p1:
+                self.show_game_over("Jogador 2 venceu!")
+            else:
+                self.show_game_over("Empate!")
 
     def update_game(self):
         self.check_food_collision()
+
+        if self.check_winner():
+            return
+
         self.check_death()
 
         if self.state != "playing":
@@ -229,6 +264,9 @@ class Game:
 
         self.player1.move()
         self.player2.move()
+
+        self.wrap_snake(self.player1)
+        self.wrap_snake(self.player2)
 
     def run(self):
         while True:
