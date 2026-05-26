@@ -91,7 +91,7 @@ class Game:
 
         self.menu_pen.goto(0, 60)
         self.menu_pen.write(
-            "Snake Multiplayer Local",
+            "Snake Game",
             align="center",
             font=("Courier", 28, "bold")
         )
@@ -126,7 +126,7 @@ class Game:
 
         self.menu_pen.goto(0, 10)
         self.menu_pen.write(
-            "Fim da rodada multiplayer",
+            "Fim da rodada",
             align="center",
             font=("Courier", 18, "normal")
         )
@@ -238,4 +238,3 @@ class Game:
                 self.update_game()
 
             time.sleep(self.delay)
-            
