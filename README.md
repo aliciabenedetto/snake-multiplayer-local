@@ -97,9 +97,7 @@ snake-multiplayer-local/
 ├── score.py
 ├── sound.py
 ├── README.md
-│
-├── docs/
-└── assets/
+
 ```
 ## Execute o jogo:
 ```text
