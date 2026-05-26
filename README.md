@@ -56,7 +56,7 @@ O objetivo do projeto é implementar um jogo Snake com dois jogadores no mesmo c
 ### Vitória
 
 - Cada comida coletada vale 10 pontos.
-- O primeiro jogador que atingir 50 pontos vence a partida.
+- O primeiro jogador que atingir 150 pontos vence a partida.
 
 ### Derrota
 
