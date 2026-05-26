@@ -1,5 +1,6 @@
 import turtle
 import time
+from sound import play_eat_sound, play_death_sound
 
 from settings import *
 from snake import Snake
@@ -43,12 +44,14 @@ class Game:
         food_obj = self.food.position()
 
         if self.player1.head.distance(food_obj) < 20:
+            play_eat_sound()
             self.food.random_position()
             self.player1.grow()
             self.scoreboard.add_p1()
             self.increase_speed()
 
         if self.player2.head.distance(food_obj) < 20:
+            play_eat_sound()
             self.food.random_position()
             self.player2.grow()
             self.scoreboard.add_p2()
@@ -65,6 +68,7 @@ class Game:
             or hit_opponent_body(self.player1, self.player2)
             or hit_opponent_head(self.player1, self.player2)
         ):
+            play_death_sound()
             time.sleep(0.5)
             self.player1.reset()
             self.scoreboard.reset_p1()
@@ -76,6 +80,7 @@ class Game:
             or hit_opponent_body(self.player2, self.player1)
             or hit_opponent_head(self.player2, self.player1)
         ):
+            play_death_sound()
             time.sleep(0.5)
             self.player2.reset()
             self.scoreboard.reset_p2()
